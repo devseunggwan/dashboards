@@ -1,0 +1,6 @@
+httpx
+openai
+pandas
+streamlit
+streamlit_image_select
+python-dotenv
