@@ -1,3 +1,4 @@
+dependency-injector
 httpx
 openai
 pandas
