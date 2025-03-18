@@ -15,6 +15,7 @@ def render_curation_display(viewmodel: NftCurationViewModel):
     ):
         viewmodel.set_network(network=st.session_state.selected_network)
         viewmodel.set_collection_id(collection_id=st.session_state.input_collection_id)
+        viewmodel.set_image_count(image_count=st.session_state.image_count)
 
         viewmodel.load_nft_data()
         viewmodel.generate_description()

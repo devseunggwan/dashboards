@@ -10,7 +10,7 @@ def render_collection_ranking_input(viewmodel: CollectionRankingViewModel):
     with col_network:
         network = st.selectbox("Select Network", st.session_state.reservoir["networks"])
     with col_period:
-        period = st.selectbox("Period", st.session_state.reservoir["ranking_period"])
+        period = st.selectbox("Period", st.session_state.reservoir["periods"])
     with col_sortby:
         sortby = st.selectbox("Sort By", st.session_state.reservoir["sort_by"])
 

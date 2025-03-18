@@ -9,13 +9,14 @@ from domain.repositories.prompt_repository import PromptReopsitory
 class SqlitePromptRepository(PromptReopsitory):
     def __init__(self, db_path: str):
         self.db_path = db_path
+        self._initialize_db()
 
     def _initialize_db(self):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
         cursor.execute(
-            sql="""
+            """
             CREATE TABLE IF NOT EXISTS prompts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 content TEXT NOT NULL,
@@ -25,7 +26,7 @@ class SqlitePromptRepository(PromptReopsitory):
         )
 
         cursor.execute(
-            sql="""
+            """
             CREATE TABLE IF NOT EXISTS completions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 prompt_id INTEGER NOT NULL,
@@ -59,10 +60,7 @@ class SqlitePromptRepository(PromptReopsitory):
         cursor = conn.cursor()
 
         __query = """
-        INSERT INTO
-            completions (prompt_id, content, model_used, created_at) 
-        VAULES 
-            (?, ?, ?, ?)
+        INSERT INTO completions (prompt_id, content, model_used, created_at) VALUES (?, ?, ?, ?)
         """
         cursor.execute(
             __query,
@@ -86,7 +84,7 @@ class SqlitePromptRepository(PromptReopsitory):
             created_at=completion,
         )
 
-    def get_history(self, limit: int = 10) -> list[tuple(Prompt, Completion)]:
+    def get_history(self, limit: int = 10) -> list[tuple[Prompt, Completion]]:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 

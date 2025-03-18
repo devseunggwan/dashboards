@@ -9,7 +9,9 @@ class LoadCollectionRankingUseCase:
         self.nft_repository = nft_repository
 
     def execute(self, network: str, period: str, sortby: str) -> pd.DataFrame:
-        collections = self.nft_repository.get_collections_by_network(network=network, period=period, sortby=sortby)
+        collections = self.nft_repository.get_collection_ranking_by_network(
+            network=network, period=period, sortby=sortby
+        )
 
         return collections
 
@@ -19,7 +21,7 @@ class LoadCollectionUseCase:
         self.nft_repository = nft_repository
 
     def execute(self, network: str, id: str) -> Collection:
-        collection = self.nft_repository.get_collection(network=network, id=id)
+        collection = self.nft_repository.get_collection_by_id(network=network, id=id)
 
         return collection
 
@@ -29,6 +31,6 @@ class LoadNftUseCase:
         self.nft_repository = nft_repository
 
     def execute(self, network: str, id: str, limit: int = 100) -> list[Nft]:
-        nfts = self.nft_repository.get_nfts_by_collection(network=network, id=id, limit=limit)
+        nfts = self.nft_repository.get_nfts_by_collection_id(network=network, collection_id=id, limit=limit)
 
         return nfts

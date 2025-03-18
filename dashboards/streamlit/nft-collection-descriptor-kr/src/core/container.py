@@ -1,6 +1,6 @@
 from data.repositories.nft_repository import Reservoir
 from data.repositories.sqlite_prompt_repository import SqlitePromptRepository
-from data.services.llm_service import OpenAI
+from data.services.llm_service import OpenAIService
 from domain.use_cases.collection_description import CollectionDescriptionUseCase, CollectionTitleUseCase
 from domain.use_cases.load_nft_data import LoadCollectionRankingUseCase, LoadCollectionUseCase, LoadNftUseCase
 from presentation.viewmodels.collection_ranking_viewmodel import CollectionRankingViewModel
@@ -13,7 +13,7 @@ class Container:
     def __init__(self, config):
         self.prompt_repository = SqlitePromptRepository(db_path=config.db_path)
         self.nft_repository = Reservoir(api_key=config.reservoir_api_key)
-        self.llm_service = OpenAI(api_key=config.openai_api_key)
+        self.llm_service = OpenAIService(api_key=config.openai_api_key)
 
         self.collection_description_use_case = CollectionDescriptionUseCase(
             prompt_repository=self.prompt_repository,

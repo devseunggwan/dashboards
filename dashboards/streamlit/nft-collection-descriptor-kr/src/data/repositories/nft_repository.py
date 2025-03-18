@@ -1,5 +1,6 @@
 import httpx
 import pandas as pd
+from domain.entities.nft import Collection, Nft
 
 
 class Reservoir:
@@ -26,7 +27,7 @@ class Reservoir:
             lambda x: f"https://{self.reservoir_networks_url_prefix[x]}.reservoir.tools/tokens/v7"
         )
 
-    def get_collection_ranking_by_network(self, network, period: str = "1d", sortby: str = "volume") -> dict:
+    def get_collection_ranking_by_network(self, network, period: str = "1d", sortby: str = "volume") -> pd.DataFrame:
         ranking_columns = [
             "image",
             "id",
@@ -50,17 +51,33 @@ class Reservoir:
 
         return ranking
 
-    def get_collection_by_id(self, network: str, id: str) -> dict:
+    def get_collection_by_id(self, network: str, id: str) -> Collection:
         params = {
             "id": id,
         }
-        collection = httpx.get(self.reservoir_collection_url(network), params=params, headers=self.headers).json()
+        __resp = httpx.get(self.reservoir_collection_url(network), params=params, headers=self.headers).json()
+        collection = Collection(
+            id=id,
+            network=network,
+            name=__resp["collections"][0]["name"],
+            description=__resp["collections"][0]["description"],
+        )
 
         return collection
 
-    def get_nfts_by_collection_id(self, network: str, collection_id: str, limit: int = 100) -> dict:
+    def get_nfts_by_collection_id(self, network: str, collection_id: str, limit: int = 100) -> list[Nft]:
         params = {"collection": collection_id, "sortBy": "updatedAt", "limit": limit}
 
-        nft_list = httpx.get(self.reservoir_nft_list_url(network), params=params, headers=self.headers).json()
+        __resp = httpx.get(self.reservoir_nft_list_url(network), params=params, headers=self.headers).json()
 
-        return nft_list
+        nfts = [
+            Nft(
+                id=item["token"]["tokenId"],
+                network=network,
+                collection_id=collection_id,
+                image_url=item["token"]["imageSmall"],
+            )
+            for item in __resp["tokens"]
+        ]
+
+        return nfts
