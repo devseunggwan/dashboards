@@ -1,4 +1,6 @@
 import streamlit as st
+from core.containers import AppContainer
+from dependency_injector.wiring import Provide, inject
 from presentation.viewmodels.collection_ranking_viewmodel import CollectionRankingViewModel
 from presentation.viewmodels.nft_curation_viewmodel import NftCurationViewModel
 from presentation.views.components.nft_collection_ranking import (
@@ -10,8 +12,10 @@ from presentation.views.components.page_config import page_config_main
 from presentation.views.components.sidebar import sidebar
 
 
+@inject
 def render_main_page(
-    collection_ranking_view_model: CollectionRankingViewModel, nft_curation_view_model: NftCurationViewModel
+    collection_ranking_view_model: CollectionRankingViewModel = Provide[AppContainer.view_models.collection_ranking],
+    nft_curation_view_model: NftCurationViewModel = Provide[AppContainer.view_models.nft_curation],
 ):
     page_config_main()
     sidebar()
