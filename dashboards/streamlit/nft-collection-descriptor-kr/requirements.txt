@@ -1,7 +1,7 @@
-dependency-injector
+dependency-injector[pydantic2]
 httpx
 openai
 pandas
+python-dotenv
 streamlit
 streamlit_image_select
-python-dotenv
