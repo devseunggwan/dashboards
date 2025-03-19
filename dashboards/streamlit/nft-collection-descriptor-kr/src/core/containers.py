@@ -1,6 +1,6 @@
 from data.repositories.nft_repository import Reservoir
 from data.repositories.sqlite_prompt_repository import SqlitePromptRepository
-from data.services.llm_service import OpenAIService
+from data.services.llm_service import GemeniService
 from dependency_injector import containers, providers
 from domain.use_cases.collection_description import CollectionDescriptionUseCase, CollectionTitleUseCase
 from domain.use_cases.load_nft_data import LoadCollectionRankingUseCase, LoadCollectionUseCase, LoadNftUseCase
@@ -20,7 +20,8 @@ class Repositories(containers.DeclarativeContainer):
 class Services(containers.DeclarativeContainer):
     config = providers.Configuration()
 
-    llm_service = providers.Singleton(OpenAIService, api_key=config.openai.api_key)
+    # llm_service = providers.Singleton(OpenAIService)
+    llm_service = providers.Singleton(GemeniService)
 
 
 class UseCases(containers.DeclarativeContainer):
