@@ -1,5 +1,7 @@
 dependency-injector[pydantic2]
 httpx
+langchain
+langchain-google-genai
 openai
 pandas
 python-dotenv
